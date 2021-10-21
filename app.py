@@ -2,17 +2,19 @@ from os import SEEK_SET
 from re import S
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from send_mail import send_mail
+
 
 app = Flask(__name__)
 
-ENV = 'dev'
+ENV = 'prod'
 
 if ENV == 'dev':
     app.debug = True
     app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:123456@localhost/succulent_store'
 else:
     app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = ''
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://ntjlhqtozwabau:d561f2654b9bb5a7c0bd651a6ea387088961e19ee51696a83378076e097d7bc4@ec2-34-250-19-18.eu-west-1.compute.amazonaws.com:5432/d348j0smkl266o'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -50,7 +52,19 @@ def submit():
             return render_template('index.html', message = "please enter required fields")
         
         '''here we gonna connect to the DB and send it all the new data that we got from the user'''
-        return render_template('success.html')
+
+        #checking if the customer name is not already in the DB
+        if db.session.query(Feedback).filter(Feedback.customer == customer).count()==0:
+            data = Feedback(customer,assistant, rating, comments)
+            db.session.add(data)
+            db.session.commit()
+            '''sending mail to our customers service using Mailtrap'''
+            send_mail(customer,assistant,rating,comments)
+
+            return render_template('success.html')
+        else:
+            return render_template('index.html', message = "you have already submitted a feedback")
+
 
 
 if __name__ == '__main__':
