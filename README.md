@@ -1,8 +1,12 @@
-#Flask-succulent_submit
+# Flask-succulent_submit
 
-website that you can sumbit your order of succulents.
+website that you can sumbit your order of succulents. the messege will be sent to a fake email address belonging to the manager of the store
 
-using:
+## Preview
+Demo: https://flask-succulent-submit.herokuapp.com/
+
+## 🧰 tech
 * Flask 
 * postgres - SQLAlchemy
-* Heroku - see finish webside at:
+* mailtrap
+* Heroku
