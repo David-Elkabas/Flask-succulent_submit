@@ -2,7 +2,10 @@
 
 website that you can sumbit your order of succulents.
 
-using:
+## Preview
+Demo: https://flask-succulent-submit.herokuapp.com/
+
+##🧰 tech
 * Flask 
 * postgres - SQLAlchemy
-* Heroku - see finish webside at:
+* Heroku
